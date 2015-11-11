@@ -1,0 +1,129 @@
+<!------------------------------------------------------------ 
+ * Copyright 2015 SPEL Technologies, Inc. All rights reserved 
+ *    Author: Pranav Grover     
+ * ------------------------------------------------------------>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loquacious - A Talking Python Editor.</title>
+    <!--Site Files-->
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.scrollex.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    
+    <!--Loquacious Files-->
+    <script src="js/loquacious-assets/skulpt_modified.js" type="text/javascript"></script> 
+    <script src="js/loquacious-assets/skulpt-stdlib.js" type="text/javascript"></script> 
+    <script src = "js/loquacious-assets/mespeak.js" type="text/javascript"></script>
+    <script src = "js/loquacious-assets/loquacious.js" type="text/javascript"></script>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <script>
+        
+  
+    //sticky
+    $(window).load(function(){
+        $("#editor-container").sticky({topSpacing:20});
+    });
+        //scrollex
+    $(function() {
+        $('#github').scrollex({
+        enter: function() {
+                 $('body').addClass('colored');
+        }, leave: function() {
+                 $('body').removeClass('colored');
+        }
+        });
+        
+
+    });
+        
+    $(function() {
+        $('.footer').scrollex({
+            enter: function() { 
+                $("#editor-container").unstick();
+            }, leave: function() {
+                $("#editor-container").sticky({topSpacing:100});
+            }
+        });
+    });
+  
+    </script>
+    
+</head>
+<body>
+    <div id="main-content">
+        <section id="jumbotron">
+            <h1>Meet <span style="font-family:Aileron Regular" >Loquacious</span></h1>
+            <h3>The world's first web-based talking Python IDE</h3>
+        </section>
+            <h2>Try it out</h2>
+            <h5>Type in your Python program and run it. Scroll down to learn more.</h5>
+        <div id="editor-container">
+            <div class="holder">
+                            <textarea data-500="width:1200px" data-600="width:700px;"
+ onkeyup="pressListener(event)" onmouseup="this.onkeyup()" id="loquacious">
+# a short Python program
+name = input("What is your name?")
+print "Hello, "+name + " I am Loquacious."
+print "Move the cursor up and down to get the line number, and left and right to speak out each character. "
+print "To get keyboard shortcuts for running your program, press the control, shift and h keys together on your keyboard. "
+                                
+</textarea><br> 
+            <div class="container">
+                <pre id="output" data-500="width:575px" data-600="width:350px;"></pre> 
+                <div id="mycanvas" data-500="width:575px" data-600="width:350px;"></div>
+            </div>
+            <div class="buttonholder">
+                <a id="run" onclick="runit()">Run</a> 
+                <a onclick="sayit(document.getElementById('loquacious').value)">Say</a> 
+                <a onclick="overview()">Overview</a> 
+            </div>
+            </div>
+        </div>
+        <div class="bottom"></div>
+        <div id="vert-column">
+            <div class="column-section">
+                <div class="icon-holder"><i class="fa fa-eye-slash fa-5x"></i></div>
+                <div class="side-text"><h3>Vision is optional</h3><p>Loquacious has integrated text-to speech to enable everyone to program. Including people who are blind or vision-impaired.<br><br>It's a fully-fledged Python IDE for the blind. And it's in your browser.</p></div>
+            </div>
+            <div class="column-section">
+                <div class="icon-holder"><i class="fa fa-headphones fa-5x"></i></div>
+                <div class="side-text"><h3>Designed for the ear</h3><p>Loquacious tells you where you are in your program. Move your cursor up and down the lines of code, it speaks the line numbers for you. As you move the cursor left and right, it speaks each letter. It can also read the entire program aloud.</p></div>
+            </div>
+            <div class="column-section">
+                <div class="icon-holder"><i class="fa fa-exclamation-triangle fa-5x"></i></div>
+                <div class="side-text"><h3>Go ahead, make mistakes</h3><p>With Loquacious, the first error in your program is spoken<br> out and the cursor moves automatically to that line, making edits easier.</p></div>
+            </div>
+            <div class="column-section">
+                <div class="icon-holder"><i class="fa fa-th-list fa-5x"></i></div>
+                <div class="side-text"><h3>Gives you the rundown</h3><p>With Loquacious, you don't have to remember every function and loop in your program. The high-level overview reads out each function definition, comments, and the start of for loops. The cursor is positioned automatically on the spoken line, and the overview can be cancelled by pressing any key.</p></div>
+            </div>
+            <div class="column-section">
+                <div class="icon-holder"><i class="fa fa-heart  fa-5x"></i></div>
+                <div class="side-text"><h3>Built with love. (And Skulpt and MeSpeak.)</h3><p>Loquacious is built from two fabulous, open-source, in-browser programs &mdash; Skulpt, an implementation of Python, and MeSpeak.js, a speech synthesiser. Loquacious combines and extends these programs into one talking IDE.</p></div>
+            </div>
+            <div class="column-section" id="github" data-background="rgba(22, 160, 133,1.0)">
+                <div class="icon-holder"><i class="fa fa-github fa-5x"></i></div>
+                <div class="side-text"><h3>Open for contributions</h3><p>Loquacious is open source, and its source code is available on GitHub. It is licensed under the GPL.</p></div>
+            </div>
+        </div>
+        <!--section class="footer">
+            <div class="holder">
+            </div>
+        </section-->
+    </div>
+    <script type="text/javascript">
+      
+
+   </script>
+    
+    <!-- <script src = "js/loquacious-assets/loquacious-delay.js" type="text/javascript"></script> -->
+    <script type="text/javascript" src="js/skrollr.min.js"></script>
+    <script type="text/javascript">
+        var s = skrollr.init();
+    </script>
+</body>
+</html>
