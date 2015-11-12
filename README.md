@@ -7,6 +7,7 @@ With its built-in text-to-speech synthesizer (meSpeak), Loquacious offers featur
 
 ## Installation
 Loquacious is built using the open source programs meSpeak and Skulpt. The files needed to run the program are in the src folder:
+
 loquacious.js: this file contains the code for Loquacious.
 
 mespeak_config.json and mespeak.js :  these files are provided by meSpeak, an open source speech synthesizer program.
@@ -29,7 +30,7 @@ There is still much to be done to improve Loquacious. To contribute:
 4. Make a pull request to get your new features added to the master.
 
 ## API Reference
-See the file globals.html in the doc folder for a description of the methods in loquacious.js.
+See the file global.html in the doc folder for a description of the methods in loquacious.js.
 
 ## History
 Created by Pranav Grover and Rohan Grover in 2015.
