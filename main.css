@@ -54,7 +54,7 @@ h5{font-size: 20px; text-align: center;}
     overflow-x: hidden;
 }
 
-#jumbotron {
+.jumbotron {
     text-align: center;
     height: auto;
     margin: 0;
@@ -64,18 +64,18 @@ h5{font-size: 20px; text-align: center;}
     animation: rainbow 120s infinite alternate linear;
     margin-bottom: -30px;
 }
-#jumbotron h1{
+.jumbotron h1{
     color: white;
     padding: 0;
     font-size: 100px;
 }
-#jumbotron h3{
+.jumbotron h3{
     color: white;
     padding: 0;
     font-size: 40px;
     margin-bottom: 100px;
 }
-#jumbotron img{
+.jumbotron img{
     -webkit-box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
 box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
@@ -89,16 +89,7 @@ section {
 .left{float: left;}
 .right{float: right;}
 
-.footer {
-    
-    text-align: center;
-    height: auto;
-    margin: 0;
-    padding: 1px;
-    background-color: #ed3333;
-    animation: rainbow 40s infinite alternate linear;
-    -webkit-animation: rainbow 40s infinite alternate linear;
-}
+
 
 .bottom{
     position: absolute; 
@@ -120,8 +111,12 @@ section {
     text-align: center;
     height: 80px;
     width: 80px;
-    color: #ed3333;
+    color: #ed3333 !important;
+    opacity: 1;
     margin: -20px auto;
+}
+.icon-holder i{
+    color: #ed3333;
 }
 .side-text{
     width: 80%;
@@ -134,13 +129,12 @@ section {
 .side-text h3{
     line-height: normal;
     font-family: aileron thin;
-    /*color: #777;*/
-    color: black;
+    color: #777;
 }
 .colored{
-    background-color: #777;
+    background-color: #5a5a5a;
 }
-#github, #github h3, #github .icon-holder{
+#github, #github h3, #github i{
     color: #fff !important;
 }
 /*#github{
@@ -149,10 +143,14 @@ section {
 }*/
 .footer{
     animation: rainbow 40s infinite alternate linear;
-    height: 400px;
+    height: 100px;
     clear: both;
+    margin-top: 800px;
+    color: white;
+    padding-top: 300px;
+    background-color: #ed3333;
 }
-@keyframes rainbow{
+/*@keyframes rainbow{
     0%{background-color: #ed3333;}
     10%{background-color: #ff7248;}
     30%{background-color: #ffb248;}
@@ -175,7 +173,7 @@ section {
     70%{background-color: #aa63de;}
     90%{background-color: #de63c6;}
     100%{background-color: #de6363;}
-}
+}*/
 /***LOQUACIOUS CSS***/
 #loquacious{
     padding: 10px;
@@ -227,6 +225,10 @@ section {
         height: 50vh;
         margin-top: -55px;
     }
+}
+#editor-container{
+    clear: both;
+    position: relative;
 }
 #editor-container a{
     padding: 15px;
