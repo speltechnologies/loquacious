@@ -85,6 +85,12 @@ function punct(input, chars) {
  
 /**
 * This function speaks out the argument string
+* As each line is read out, the cursor is positioned at the start of that line.
+* Pressing any key stops meSpeak, and the programmer can start editing the program from the next line.
+* In addition, the overview starts from the current position of the cursor within the program.
+* 
+* To do: If the cursor is already at the end of the line, speak it aloud.
+*
 * @method sayit
 * @param {string} currentString the input string
 */             
@@ -99,7 +105,9 @@ function sayit(currentString){
         meSpeak.speak(punct(currentString));
     }
     speaking = false;
-};
+	
+    
+}
             
 /**
 * This function runs a python program.It
@@ -157,6 +165,77 @@ function runit() {
               });
          }; 
 }
+
+/**
+* This function speaks out the complete program. As each line is read out, the cursor is positioned at the start of that line.
+* Pressing any key cancels the overview, and the programmer can start editing the program from the next line.
+* In addition, the overview starts from the current position of the cursor within the program.
+*
+* @method speak
+*/ 
+function speak() {
+        preload();
+        
+	    txtArea = document.getElementById('loquacious');
+        if (txtArea.addEventListener) 	{  // for all browsers except IE 8 and earlier
+            txtArea.addEventListener("keydown", stopHighLevelOverview);
+        }
+        else if (txtArea.attachEvent) 	{ // for IE 8 and earlier
+            txtArea.attachEvent("keydown", stopHighLevelOverview);
+        }
+        
+        var stopOverview = false;  
+        
+        function stopHighLevelOverview(event) {
+        
+         //var key = event.keyCode;
+       
+            console.log("stopped high level overview");
+            stopOverview = true;
+        }
+        
+        var lineNum = 1;
+        var data = [];
+        if (stopOverview == false) {
+        //alert("in function overview loop");
+           // Internet Explorer
+    		if (document.selection) {
+        	    txtArea.focus();
+        	    var Sel = document.selection.createRange();
+        	    Sel.moveStart('character', -txtArea.value.length);
+        	    cursorPos = Sel.text.length;
+    		}
+    		// Firefox, Safari support
+    		else if(txtArea.selectionStart || txtArea.selectionStart == '0')
+        	    cursorPos = txtArea.selectionStart;       	  
+    		  
+    		    //alert("cursorPos = " +cursorPos);
+    		    data = txtArea.value.substring(cursorPos).split("\n");
+    		    var i = 0;
+    		    var sequence = Promise.resolve();
+    		    lineNumber = txtArea.value.substring(0, cursorPos).split("\n").length;
+    		    data.forEach(function(arrayData) {
+    		    
+    		       sequence = sequence.then(function() {
+    		          lineNumber++;
+    		          // match "def", "for", "while", and "#"
+    		          // if ((arrayData.match(/^\s*def /) != null) || (arrayData.match(/^\s*for /) != null) || (arrayData.match(/^\s*while /) != null) || (arrayData.match(/^\s*#/) != null)) 
+    		          //     ;
+    		          // else {
+    		          //  arrayData = "";
+    		          // }
+    		     
+    		          //console.log("arrayData" +arrayData);
+    		          if (stopOverview == false)
+    		              return sayItUsingPromise(arrayData, lineNumber);
+    		          else 
+    		              return;
+    		       })
+    		    })
+    		         
+        }         
+ }
+
 
 /**
 * This function gives a high-level overview of the program by reading out comments, function definitions,
@@ -401,8 +480,8 @@ function handler_keyUp(e) {
     
      // press the s, SHIFT, and the CTRL keys at the same time
     if (e.ctrlKey && e.keyCode == 83 && e.shiftKey) {
-        // speak out the program
-        sayit("");
+        // speak out the program with the cursor control
+        speak();
     }
     
     // press the o, SHIFT, and the CTRL key at the same time
