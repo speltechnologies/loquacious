@@ -1,0 +1,252 @@
+
+@font-face{
+    font-family: aileron light;
+    src: url(assets/Aileron-Light);    
+}
+@font-face{
+    font-family: aileron light;
+    src: url(assets/Aileron-Light.otf);    
+}
+@font-face{
+    font-family: aileron light;
+    src: url(assets/Aileron-Light);    
+}
+@font-face{
+    font-family: aileron regular;
+    src: url(assets/Aileron-Regular.otf);    
+}
+@font-face{
+    font-family: aileron heavy;
+    src: url(assets/Aileron-Heavy.otf);    
+}
+@font-face{
+    font-family: aileron black;
+    src: url(assets/Aileron-Black.otf);    
+}
+@font-face{
+    font-family: aileron italic;
+    src: url(assets/Aileron-Italic.otf);    
+}
+@font-face{
+    font-family: aileron thin;
+    src: url(assets/Aileron-Thin.otf);    
+}
+@font-face{
+    font-family: aileron ultralight;
+    src: url(assets/Aileron-UltraLight.otf);    
+}
+*:focus{
+    outline: 0;
+}
+
+body{padding: 0; margin: 0; font-family: aileron thin, avenir next, avenir, futura, verdana, sans-serif; letter-spacing: 2px; background-color: #fff; transition:background-color 0.5s ease; }
+h1{font-size: 100px; text-align: center;}
+h2{font-size: 70px; text-align: center;}
+h3{font-size: 40px; text-align: center;}
+h4{font-size: 30px; text-align: center;}
+h5{font-size: 20px; text-align: center;}
+#main-content {
+    margin: 0;
+    height: auto;
+    width: auto;
+    padding: 0;
+    
+    overflow-x: hidden;
+}
+
+.jumbotron {
+    text-align: center;
+    height: auto;
+    margin: 0;
+    padding: 1px;
+    font-family: aileron ultralight, avenir next, avenir, futura, verdana, sans-serif;
+    background-color: #ed3333;
+    animation: rainbow 120s infinite alternate linear;
+    margin-bottom: -30px;
+}
+.jumbotron h1{
+    color: white;
+    padding: 0;
+    font-size: 100px;
+}
+.jumbotron h3{
+    color: white;
+    padding: 0;
+    font-size: 40px;
+    margin-bottom: 100px;
+}
+.jumbotron img{
+    -webkit-box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
+box-shadow: 0px -19px 85px 1px rgba(0,0,0,0.75);
+}
+
+section {
+    width: 100%;
+    text-align: center;
+}
+.holder{width: 100%; max-width: 1200px; margin: 0 auto}
+.left{float: left;}
+.right{float: right;}
+
+
+
+.bottom{
+    position: absolute; 
+    bottom: 0;
+}
+#vert-column{
+    position: relative;
+    left: 400px;
+    width: 400px;
+    height:auto;
+    margin: 0 auto;
+    top: 300px;
+}
+.column-section{
+    width: 100%;
+    margin-bottom: 400px;
+}
+.icon-holder{
+    text-align: center;
+    height: 80px;
+    width: 80px;
+    color: #ed3333 !important;
+    opacity: 1;
+    margin: -20px auto;
+}
+.icon-holder i{
+    color: #ed3333;
+}
+.side-text{
+    width: 80%;
+    margin: 0 auto;
+    font-size: 20px;
+    font-family: aileron regular;
+    letter-spacing: 1.05px;
+    line-height: 1.6em;
+}
+.side-text h3{
+    line-height: normal;
+    font-family: aileron thin;
+    color: #777;
+}
+.colored{
+    background-color: #5a5a5a;
+}
+#github, #github h3, #github i{
+    color: #fff !important;
+}
+/*#github{
+    position: relative;
+    left: -400px;
+}*/
+.footer{
+    animation: rainbow 40s infinite alternate linear;
+    height: 100px;
+    clear: both;
+    margin-top: 800px;
+    color: white;
+    padding-top: 300px;
+    background-color: #ed3333;
+}
+/*@keyframes rainbow{
+    0%{background-color: #ed3333;}
+    10%{background-color: #ff7248;}
+    30%{background-color: #ffb248;}
+    40%{background-color: #7bde63;}
+    50%{background-color: #63deaf;}
+    60%{background-color: #63bdde;}
+    60%{background-color: #638ede;}
+    70%{background-color: #aa63de;}
+    90%{background-color: #de63c6;}
+    100%{background-color: #de6363;}
+}
+@-webkit-keyframes rainbow{
+    0%{background-color: #ed3333;}
+    10%{background-color: #ff7248;}
+    30%{background-color: #ffb248;}
+    40%{background-color: #7bde63;}
+    50%{background-color: #63deaf;}
+    60%{background-color: #63bdde;}
+    60%{background-color: #638ede;}
+    70%{background-color: #aa63de;}
+    90%{background-color: #de63c6;}
+    100%{background-color: #de6363;}
+}*/
+/***LOQUACIOUS CSS***/
+#loquacious{
+    padding: 10px;
+    width: 90%;
+    border:9px gray solid;
+    resize: none;
+    display: block;
+    height: 50vh;
+    font-family: "Source Code Pro", monospace;
+    font-size: 22px;
+}
+.container{
+    width: 100%;
+}
+.buttonholder{
+    width: 100%;
+    display: block;
+    height: 70px;
+    clear: both;
+}
+#output, #mycanvas{
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: -20px;
+    display: inline-block;
+    height: 25vh;
+    overflow: scroll;
+    font-family: "Source Code Pro", monospace;
+    font-size: 22px;
+    background-color: #f7f7f7;
+    float: left;
+}
+#output{
+    border-right: 2px solid #e5e5e5;
+}
+.container h3{
+    clear: both;
+    margin-top: -10px;
+    font-size: 20px;
+}
+@media only screen and (max-height: 620px){
+    #loquacious{
+        height: 55vh;
+    }
+}
+@media only screen and (max-height: 370px){
+    #loquacious{
+        height: 50vh;
+        margin-top: -55px;
+    }
+}
+#editor-container{
+    clear: both;
+    position: relative;
+}
+#editor-container a{
+    padding: 15px;
+    font-size: 18px;
+    display: inline-block;
+    margin: 0;
+    color: #666;
+    background-color: #c7c7c7;
+}
+#editor-container a:hover{
+    color: #434343;
+    background-color: #ededed;
+}
+#editor-container #run{
+    background-color: #4bd451;
+    color: white;
+}
+#editor-container #run:hover{
+    background-color: #44b448;
+    color: white;
+}
