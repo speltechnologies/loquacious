@@ -85,6 +85,12 @@ function punct(input, chars) {
  
 /**
 * This function speaks out the argument string
+* As each line is read out, the cursor is positioned at the start of that line.
+* Pressing any key stops meSpeak, and the programmer can start editing the program from the next line.
+* In addition, the overview starts from the current position of the cursor within the program.
+* 
+* To do: If the cursor is already at the end of the line, speak it aloud.
+*
 * @method sayit
 * @param {string} currentString the input string
 */             
@@ -99,7 +105,9 @@ function sayit(currentString){
         meSpeak.speak(punct(currentString));
     }
     speaking = false;
-};
+	
+    
+}
             
 /**
 * This function runs a python program.It
@@ -159,11 +167,81 @@ function runit() {
 }
 
 /**
+* This function speaks out the complete program. As each line is read out, the cursor is positioned at the start of that line.
+* Pressing any key cancels the overview, and the programmer can start editing the program from the next line.
+* In addition, the overview starts from the current position of the cursor within the program.
+*
+* @method speak
+*/ 
+function speak() {
+        preload();
+        
+	    txtArea = document.getElementById('loquacious');
+        if (txtArea.addEventListener) 	{  // for all browsers except IE 8 and earlier
+            txtArea.addEventListener("keydown", stopHighLevelOverview);
+        }
+        else if (txtArea.attachEvent) 	{ // for IE 8 and earlier
+            txtArea.attachEvent("keydown", stopHighLevelOverview);
+        }
+        
+        var stopOverview = false;  
+        
+        function stopHighLevelOverview(event) {
+        
+         //var key = event.keyCode;
+       
+            console.log("stopped high level overview");
+            stopOverview = true;
+        }
+        
+        var lineNum = 1;
+        var data = [];
+        if (stopOverview == false) {
+        //alert("in function overview loop");
+           // Internet Explorer
+    		if (document.selection) {
+        	    txtArea.focus();
+        	    var Sel = document.selection.createRange();
+        	    Sel.moveStart('character', -txtArea.value.length);
+        	    cursorPos = Sel.text.length;
+    		}
+    		// Firefox, Safari support
+    		else if(txtArea.selectionStart || txtArea.selectionStart == '0')
+        	    cursorPos = txtArea.selectionStart;       	  
+    		  
+    		    //alert("cursorPos = " +cursorPos);
+    		    data = txtArea.value.substring(cursorPos).split("\n");
+    		    var i = 0;
+    		    var sequence = Promise.resolve();
+    		    lineNumber = txtArea.value.substring(0, cursorPos).split("\n").length;
+    		    data.forEach(function(arrayData) {
+    		    
+    		       sequence = sequence.then(function() {
+    		          lineNumber++;
+    		          // match "def", "for", "while", and "#"
+    		          // if ((arrayData.match(/^\s*def /) != null) || (arrayData.match(/^\s*for /) != null) || (arrayData.match(/^\s*while /) != null) || (arrayData.match(/^\s*#/) != null)) 
+    		          //     ;
+    		          // else {
+    		          //  arrayData = "";
+    		          // }
+    		     
+    		          //console.log("arrayData" +arrayData);
+    		          if (stopOverview == false)
+    		              return sayItUsingPromise(arrayData, lineNumber);
+    		          else 
+    		              return;
+    		       })
+    		    })
+    		         
+        }         
+ }
+
+
+/**
 * This function gives a high-level overview of the program by reading out comments, function definitions,
 * and for loops. As each line is read out, the cursor is positioned at the start of that line.
 * Pressing any key cancels the overview, and the programmer can start editing the program from the next line.
 * In addition, the overview starts from the current position of the cursor within the program.
-* To do: make it customizable.
 *
 * @method overview
 */ 
@@ -236,7 +314,7 @@ function overview() {
 * @method sayItWithPromise
 * @param {string} data the line to be spoken
 * @param {Number} lineNumber the line number of the spoken line
-*/  
+*/ 
 function sayItUsingPromise(data, lineNumber) {
     return new Promise(function(resolve, reject) {
        //console.log( "in function sayItUsingPromise");
@@ -251,21 +329,12 @@ function sayItUsingPromise(data, lineNumber) {
 /**
 * This function is used to load configuration and voice files.
 * @method preload 
-*/  
+*/ 
 function preload(){
-    meSpeak.loadConfig('js/loquacious-assets/mespeak_config.json');
-    meSpeak.loadVoice('js/loquacious-assets/voices/en/en.json');
+    meSpeak.loadConfig('src/mespeak_config.json');
+    meSpeak.loadVoice('src/voices/en/en.json');
 }
  
-/**
-* @method textbox - not used currently
-*/                      
-function textbox(){
-    var ctl = document.getElementById('loquacious');
-    var startPos = ctl.selectionStart;
-    var endPos = ctl.selectionEnd;
-    //console.log(startPos + ", " + endPos);
-};
 
 /**
 * This function is used when the up, down, left or right arrow key is pressed
@@ -274,7 +343,7 @@ function textbox(){
 * When the right arrow is pressed, it reads out the word or character after cursor
 *
 * @method presslistener
-* @method event is a key press
+* @param {Event} event is a key press
 */             
 function pressListener(event) {
     
@@ -327,12 +396,12 @@ function getCursorLineNumber() {
 * otherwise, returns the text before the cursor if left arrow is pressed.
 *
 * @method getCursorText
-* @param {Number} keypressed, number of the key pressed
+* @param {Number} keypressed number of the key pressed
 */                  
 function getCursorText(keypressed) {
     txtArea = document.getElementById('loquacious');
     var cursorPos = 0;
-    // check on Internet Explorer
+    // for Internet Explorer
     if (document.selection) {
         txtArea.focus();
         var select1 = document.selection.createRange();
@@ -375,10 +444,10 @@ function setCursorPosition(txtArea, lineNumber) {
         txtArea.setSelectionRange(pos, pos);
         //console.log('Updated cursor position to ' +pos);
     } 
-    // check on Internet Explorer
+    // for Internet Explorer
     else if (ctrl.createTextRange) {
-	var range = ctrl.createTextRange();
-	range.collapse(true);
+		var range = ctrl.createTextRange();
+		range.collapse(true);
         range.moveEnd('character', pos);
         range.moveStart('character', pos);
         range.select();
@@ -397,7 +466,7 @@ function outf(text) {
 } 
  
 /**
-* This function is the event handler for key presses.
+* This function is event the handler for key presses.
 * Run: CTRL+SHIFT+r; Speak:CTRL+SHIFT+s; Overview:CTRL+SHIFT+o; Help:CTRL+SHIFT+h
 * @method handler_keyUp
 */
@@ -411,8 +480,8 @@ function handler_keyUp(e) {
     
      // press the s, SHIFT, and the CTRL keys at the same time
     if (e.ctrlKey && e.keyCode == 83 && e.shiftKey) {
-        // speak out the program
-        sayit("");
+        // speak out the program with the cursor control
+        speak();
     }
     
     // press the o, SHIFT, and the CTRL key at the same time
