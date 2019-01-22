@@ -1,9 +1,9 @@
 
 ## Loquacious
-Loquacious is the world's first web-based talking Python IDE. You can try out Loquacious [here] (http://speltechnologies.github.io/loquacious/).
+Loquacious is the world's first web-based Python IDE with speech integration. You can try out Loquacious [here] (https://www.speltechnologies.com/loquacious/).
 
 ## Motivation
-With its built-in text-to-speech synthesizer (meSpeak), Loquacious offers features that screen readers cannot provide. 
+With its built-in text-to-speech synthesizer (meSpeak), Loquacious offers features that screen readers cannot provide. Loquacious provides support for ARIA regions to work better with screenreaders. It gives the reader a choice to use CodeMirror, a plain textarea for editor, and meSpeak to provide support for more screenreader and browser combinations. 
 
 ## Installation
 Loquacious is built using the open source programs meSpeak and Skulpt. The files needed to run the program are in the src folder:
@@ -29,10 +29,24 @@ There is still much to be done to improve Loquacious. To contribute:
 
 4. Make a pull request to get your new features added to the master.
 
+If your request is accepted, your name will be included in the list of contributors
+
 ## API Reference
 See the file global.html in the doc folder for a description of the methods in loquacious.js.
 
 ## History
+Loquacious 2.0 released in October 2018. New features are listed below:
+   - Includes support for ARIA regions in the editor. If data changes within an ARIA region, it will be spoken by the screenreader.
+   - User has option to use a plain textarea or CodeMirror for editing code. CodeMirror is an open source editor that provides added functionality such as support for language modes and editing operations. However, screen readers are not able to read text written in CodeMirror. Loquacious supports accessibility through the use of ARIA regions.
+   - Has an accessibility panel that user can use to switch to a textarea and/or enable meSpeak inside the editor
+   - Eliminates conflict when a screen reader is used and meSpeak is also enabled.Uses the following priority order:
+      if the meSpeak is enabled in Loquacious accessibility panel, the built-in text-to-speech reader is used to read the contents of Loquacious. Otherwise, the screenreader reads out the editor contents.
+
+## List of Contributors
+    Radhika Grover
+    Pranav Grover
+    Rohan Grover
+    
 Created by Pranav Grover and Rohan Grover in 2015.
 
 ## License

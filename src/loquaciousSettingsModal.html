@@ -1,0 +1,61 @@
+<!-- **********************************************************************************************************
+    Copyright 2018, SPEL Technologies, Inc. All Rights reserved
+    Loquacious Modal 
+    This is the modal that pops up when the settings button of Loquacious is clicked
+    ********************************************************************************************************* -->
+
+
+
+<div id="page">
+
+	<!-- need this div with id page for modal to work -->
+</div>
+<!-- end #page -->
+
+<div class="modal-overlay" id="modal_window" aria-hidden="true"
+	role="dialog" aria-labelledby="modal_title">
+
+	<div class="modal-content" id="modal_holder" role="document">
+
+		<h5 id="modal_title">Loquacious Settings</h5>
+		<form>
+			<div class="modal__content" id="modal-1-content">
+				<div>
+
+					<input aria-labelledby="textAreaLabel" type="checkbox"
+						id="setTextarea" value="" name='textarea'> <label
+						id="textAreaLabel" for="setTextarea" style="font-size: 1.2rem">Convert
+						to text area</label>
+				</div>
+				<div>
+					<input aria-labelledby="TTSLabel" type="checkbox"
+						id="setMeSpeakInEditor" value="" name='text to speech'> <label
+						id="TTSLabel" for="setMeSpeakInEditor" style="font-size: 1.2rem">Enable
+						text-to-speech</label>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="loquacious-option-button"
+							style="font-size: 15px" onclick="setEditorDefault()">Reset</button>
+						<button type="button" class="loquacious-option-button"
+							style="font-size: 15px;" onclick="saveEditorSettings()">Apply
+							Settings</button>
+				
+						<div role="alert" aria-live="assertive" aria-atomic="true" class="row"
+							style="font-size: 16px; padding-top: 10px" id="modal_message"></div>
+
+					</div>
+				</div>
+		</form>
+
+		<button class="btn-close" id="modal_close" type="button"
+			aria-label="close">&times;</button>
+
+	</div>
+	<!-- end .modal-content -->
+
+</div>
+<!-- end .modal-overlay -->
+
+
+
