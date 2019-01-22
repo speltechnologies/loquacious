@@ -1,158 +1,329 @@
-<!DOCTYPE HTML>
-<html>
-<!----------------------------------------------------------------------------
-Copyright 2015 SPEL Technologies, Inc. All Rights Reserved.
- 
-    Authors: Pranav Grover and Rohan Grover
-     
+<!--   ----------------------------------------------------------------------------
+    Copyright 2015 SPEL Technologies, Inc. All Rights Reserved.
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
- 
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-     You should have received a copy of the GNU General Public License
+
+    You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ----------------------------------------------------------------------->
-<!-- include the meSpeak, skulpt and loquacious files -->
+ ----------------------------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Loquacious - A Talking Python IDE</title>
-    <!--Site Files-->
-    <link href="main.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery.scrollex.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    
-    <!--Loquacious Files-->
-    <script src="js/loquacious-assets/skulpt_modified.js" type="text/javascript"></script> 
-    <script src="js/loquacious-assets/skulpt-stdlib.js" type="text/javascript"></script> 
-    <script src = "js/loquacious-assets/mespeak.js" type="text/javascript"></script>
-    <script src = "js/loquacious-assets/loquacious.js" type="text/javascript"></script>
-    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <script>
-    //sticky
-    $(window).load(function(){
-        $("#editor-container").sticky({topSpacing:20});
-        //window.resizeTo($(window).width(),$( window ).height()+1);
-    });
-        //scrollex
-    $(function() {
-        $('#github').scrollex({
-        enter: function() {
-                 $('body').addClass('colored');
-        }, leave: function() {
-                 $('body').removeClass('colored');
-        }
-        });
-        
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Loquacious</title>
+		
+<!-- CSS files -->
 
-    });
-    $(function() {
-        $('.footer').scrollex({
-            enter: function() { 
-                $("#editor-container").unstick();
-                $(window).height
-            }, leave: function() {
-                $("#editor-container").sticky({topSpacing:20});
-            }
-        });
-    });
-      
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="styles/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+	
+<!-- Font awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+    <!-- Sweetalert -->
+    <link rel="stylesheet" href="styles/sweetalert.css" type="text/css"> 
 
-        
-    </script>
-    
+    <!-- CodeMirror style -->
+    <link rel="stylesheet" type="text/css" href="js/codemirror-minified/lib/codemirror.css"> 
+
+<!-- js files -->
+    <script src="src/mespeak.js" type="text/javascript"></script>
+ 
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <script src="src/skulpt_modified.js" type="text/javascript"></script>
+    <script src="src/skulpt-stdlib.js" type="text/javascript"></script>
+
 </head>
-<body>
-    <div id="main-content">
-        <section class="jumbotron">
-            <h1>Meet <span style="font-family:Aileron Regular" >Loquacious</span></h1>
-            <h3>The world's first web-based talking Python IDE</h3>
-        </section>
-            <h2>Try it out</h2>
-            <h5>Type in your Python Program and run it. Scroll down to learn more.</h5>
-        <h3>Loquacious Python Editor</h3> 
-        <div id="editor-container">
-            <div class="holder">
-        
-            <!--- create the text area for editor and buttors for Run, Say and Overview functions --->
-            
+<body id="body">
+  <div>
+	<div class=" section light">
+		<div class="row">
+			<!--features -->
+			<div id="vert-column">
+				<div class="row">
+					<div class="column-section col s12 m4">
+						<div class="icon-holder">
+							<i class="fa fa-eye-slash fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Vision is optional</h3>
+							<p>Loquacious is a Python IDE with integrated text-to-speech
+								capability to enable everyone to program. Including people who
+								have blindness or vision-impairments. And it's in your browser.
+								Loquacious supports several screenreaders including VoiceOver
+								and NVDA. Alternately, select the Text-to-Speech option in the
+								accessibility panel to hear Loquacious.</p>
+						</div>
+					</div>
+					<div class="column-section col s12 m4">
+						<div class="icon-holder">
+							<i class="fa fa-headphones fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Designed for the ear</h3>
+							<p>Loquacious tells you where you are in your program. Move
+								your cursor up and down the lines of code, it speaks the entire
+								line for you. As you move left and right or use delete and
+								backspace, it speaks each letter. It can also read the entire
+								program aloud and automatically moves the cursor to the line
+								being read - you can stop it on the desired line by pressing the
+								right and left arrow keys.</p>
+						</div>
+					</div>
+					<div class="column-section col s12 m4">
+						<div class="icon-holder">
+							<i class="fa fa-exclamation-triangle fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Go ahead, make mistakes</h3>
+							<p>With Loquacious, the first error in your program is spoken
+								out and the cursor moves automatically to that line, making
+								edits easier.</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="column-section col s12 m4">
+						<div class="icon-holder">
+							<i class="fa fa-th-list fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Gives you the rundown</h3>
+							<p>With Loquacious, you don't have to remember every function
+								and loop in your program. The high-level overview reads out each
+								function definition, comments, and the start of for loops. The
+								cursor is positioned automatically on the spoken line, and the
+								overview can be cancelled by pressing any key.</p>
+						</div>
+					</div>
+					<div class="column-section col s12 m4">
+						<div class="icon-holder">
+							<i class="fa fa-heart  fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Built with love</h3>
+							<h5>(and Skulpt, MeSpeak, and CodeMirror)</h5>
+							<p>Loquacious is built from fabulous, open-source,
+								in-browser programs &mdash; Skulpt, an implementation of Python,
+								and MeSpeak.js, a speech synthesiser. With Loquacious 2.0, you can choose CodeMirror.js
+								or an enhanced textarea with text-to-speech for editing your code through the settings panels to
+								support multiple screenreader and browser combinations.</p>
+						</div>
+					</div>
+					<a href="https://github.com/speltechnologies/loquacious"><div class="column-section col s12 m4" id="github"
+						data-background="rgba(22, 160, 133,1.0)">
+						<div class="icon-holder">
+						
+						<i class="fa fa-github fa-5x"></i>
+						</div>
+						<div class="side-text">
+							<h3>Open for contributions</h3>
+							<p>Loquacious is open source, and its source code is
+								available on GitHub. It is licensed under the GPL.</p>
+						</div></a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<h4 for="loquacious" id="loq_editor">Loquacious Python
+						Editor</h4>
+					<div class='js-body' id="EditorDiv">
+						<textarea aria-hidden="true" id='loquacious'
+							placeholder="Write your code here" class='loquaciousEditor'>						       
+                        </textarea>
+					</div>
+					<div>
+						<button id="run_and_save_button" type='button'
+							data-tooltip="Run and save the program"
+							onclick='runitAndTest("");'
+							class='loquacious-run-button btn tooltip-bottom'>
+							<i class='material-icons large' aria-hidden='true'
+								style='color: black'>play_arrow</i>
+						</button>
+						<button id="reset_button" type='button' onclick='resetEditor()'
+							data-tooltip="Clear the program in the editor"
+							class='loquacious-option-button btn tooltip-bottom'>
+							<i class='material-icons' aria-hidden='true'
+								style='font-size: 24px; color: black'>delete</i>
+						</button>
+						<button id="speak_all_button" type='button' onclick='speak()'
+							data-tooltip="Speak each line in program. Press right or left arrow key to stop cursor on desired line."
+							class='loquacious-option-button btn tooltip-bottom'>
+							<i class='material-icons' aria-hidden='true'
+								style='font-size: 24px; color: black'>hearing</i>
+						</button>
+						<button id="overview_button" type='button' onclick='overview()'
+							data-tooltip="Speak comments, function definitions, and loops in program"
+							class='loquacious-option-button btn tooltip-bottom'>
+							<i class='material-icons ' aria-hidden='true'
+								style='font-size: 24px; color: black'>hearing</i><i
+								class='material-icons ' aria-hidden='true' style='color: black'>fast_forward</i>
+						</button>
+						<button type='button' onclick='saveTextAsFile("loquacious")'
+							data-tooltip="Save program to a local file"
+							class='loquacious-option-button btn tooltip-bottom'>
+							<i class='material-icons large' aria-hidden='true'
+								style='font-size: 24px; color: black'>save_alt</i>
+						</button>
+						<button type="button" data-tooltip="Click here for Loquacious editor commands"
+							class='loquacious-option-button btn navQuest tooltip-bottom'
+							onclick="loquaciousHelp()"  style="text-align: right; float: right; ">
+							<i class="fa fa-keyboard-o fa-3x"
+								style="position:relative; color: black;"
+								aria-hidden="true"></i>
+						</button>
+						<button id="modal_open" type='button'
+							data-tooltip="Modify accessibility settings"
+							class='loquacious-option-button btn tooltip-bottom'
+							style="text-align: right; float: right;">
+							<i class='material-icons large' aria-hidden='true'
+								style='font-size: 24px; color: black'>settings</i>
+						</button>
 
-            <form> 
-            <textarea data-500="width:1154px" data-600="width:700px;" onkeyup="pressListener(event)" onmouseup="this.onkeyup()" id="loquacious">
-# a short Python program
-name = input("What is your name?")
-print "Hello, "+name + " I'm Loquacious."
-print "Move the cursor up and down to get the line number, and left and right to speak out each character. "
+					</div>
+					<div id="solution">
+						<pre class='outputBox' id='output'>Output : </pre>
+						<div id='status' class='message'
+							style='overflow: scroll; height: 50px;'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 
-print "To get keyboard shortcuts for running your program, press the control, shift and h keys together on your keyboard. "   
-                </textarea>
-                <br> 
-                <div class="container">
-                    <pre id="output" data-500="width:575px" data-600="width:350px;"></pre> 
-                    <div id="mycanvas" data-500="width:575px" data-600="width:350px;"></div>
-                </div>
-                <div class="buttonholder">
-                    <a id="run" onclick="runit()">Run</a> 
-                    <a onclick="speak()">Say</a> 
-                    <a onclick="overview()">Overview</a> 
-                </div>
-            </div>
-        </div>
-        <div class="bottom"></div>
-        <div id="vert-column">
-            <div class="column-section">
-                <div class="icon-holder"><i class="fa fa-eye-slash fa-5x"></i></div>
-                <div class="side-text"><h3>Vision is optional</h3><p>Loquacious is a Python IDE with integrated text-to-speech capability to enable everyone to program. Including people who are blind or vision-impaired.<br><br>And it's in your browser.</p></div>
-            </div>
-            <div class="column-section">
-                <div class="icon-holder"><i class="fa fa-headphones fa-5x"></i></div>
-                <div class="side-text"><h3>Designed for the ear</h3><p>Loquacious tells you where you are in your program. Move your cursor up and down the lines of code, it speaks the line numbers for you. As you move left and right, it speaks each letter. It can also read the entire program aloud.</p></div>
-            </div>
-            <div class="column-section">
-                <div class="icon-holder"><i class="fa fa-exclamation-triangle fa-5x"></i></div>
-                <div class="side-text"><h3>Go ahead, make mistakes</h3><p>With Loquacious, the first error in your program is spoken<br> out and the cursor moves automatically to that line, making edits easier.</p></div>
-            </div>
-            <div class="column-section">
-                <div class="icon-holder"><i class="fa fa-th-list fa-5x"></i></div>
-                <div class="side-text"><h3>Gives you the rundown</h3><p>With Loquacious, you don't have to remember every function and loop in your program. The high-level overview reads out each function definition, comments, and the start of for loops. The cursor is positioned automatically on the spoken line, and the overview can be cancelled by pressing any key.</p></div>
-            </div>
-            <div class="column-section">
-                <div class="icon-holder"><i class="fa fa-heart  fa-5x"></i></div>
-                <div class="side-text"><h3>Built with love. (And Skulpt and MeSpeak.)</h3><p>Loquacious is built from two fabulous, open-source, in-browser programs &mdash; Skulpt, an implementation of Python, and MeSpeak.js, a speech synthesiser. Loquacious combines and extends these programs into one talking IDE.</p></div>
-            </div>
-            <div class="column-section" id="github" data-background="rgba(22, 160, 133,1.0)">
-                <div class="icon-holder"><i class="fa fa-github fa-5x"></i></div>
-                <div class="side-text"><h3>Open for contributions</h3><p>Loquacious is open source, and its source code is available on GitHub. It is licensed under the GPL.</p></div>
-            </div>
-        </div>
-        <section class="footer ">
-            <div class="holder">
-                Copyright &copy; 2015 SPEL Technologies, Inc. All Rights Reserved.
-            </div>
-        </section>
-    </div>
-    <script type="text/javascript">
-        /**
-        * 
-        * @method builtinRead
-        * @param x
-        */          
-        function builtinRead(x) {
-            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-            return Sk.builtinFiles["files"][x];
-        }
 
-   </script>
-    <script type="text/javascript" src="js/skrollr.min.js"></script>
-    <script type="text/javascript">
-        var s = skrollr.init();
-    </script>
-</body>
+		<input type="hidden" value="1" id="current" />
+		<form name='solution'>
+			<input type=hidden id='editorNumber' value='' />
+			<textarea style="display: none" id="output" onchange="printOutput()"></textarea>
+		</form>
+		
+	
+	</div>
+
+<!-- **********************************************************************************************************
+    Loquacious Modal 
+    This is the modal that pops up when the settings button of Loquacious is clicked
+    ********************************************************************************************************* -->
+
+<div id="page">
+
+</div>
+<!-- end #page -->
+
+<div class="modal-overlay" id="modal_window" aria-hidden="true"
+	role="dialog" aria-labelledby="modal_title">
+
+	<div class="modal-content" id="modal_holder" role="document">
+
+		<h5 id="modal_title">Loquacious Settings</h5>
+		<form>
+			<div class="modal__content" id="modal-1-content">
+				<div>
+
+					<input aria-labelledby="textAreaLabel" type="checkbox"
+						id="setTextarea" value="" name='textarea'> <label
+						id="textAreaLabel" for="setTextarea" style="font-size: 1.2rem">Convert
+						to text area</label>
+				</div>
+				<div>
+					<input aria-labelledby="TTSLabel" type="checkbox"
+						id="setMeSpeakInEditor" value="" name='text to speech'> <label
+						id="TTSLabel" for="setMeSpeakInEditor" style="font-size: 1.2rem">Enable
+						text-to-speech</label>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="loquacious-option-button"
+							style="font-size: 15px" onclick="setEditorDefault()">Reset</button>
+						<button type="button" class="loquacious-option-button"
+							style="font-size: 15px;" onclick="saveEditorSettings()">Apply
+							Settings</button>
+				
+						<div role="alert" aria-live="assertive" aria-atomic="true" class="row"
+							style="font-size: 16px; padding-top: 10px" id="modal_message"></div>
+
+					</div>
+				</div>
+			   </div>
+		</form>
+
+		<button class="btn-close" id="modal_close" type="button"
+			aria-label="close">&times;</button>
+
+	</div>
+	<!-- end .modal-content -->
+
+</div>
+<!-- end .modal-overlay -->
+
+
+
+<script>
+
+     $(document).ready(function() {
+ 	    
+         var id="loquacious";  
+         loadLoquaciousEditorSettingsAndEditor(id);   // loads the LoquaciousEditor and applies settings    
+         initModal(); // initializes the modal
+
+     });
+
+ </script>
+
+
+ </body>
+ 
+<footer>
+  
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+	<!-- Code Mirror -->
+	<script type="text/javascript"
+		src="src/codemirror-minified/lib/codemirror.css"></script>
+	<script type="text/javascript"
+		src="src/codemirror-minified/lib/codemirror.js"></script>
+	<script type="text/javascript"
+		src="src/codemirror-minified/addon/edit/matchbrackets.js"></script>
+	<script type="text/javascript"
+		src="src/codemirror-minified/mode/python/python.js"></script>
+	<script type="text/javascript"
+		src="src/codemirror-minified/addon/selection/active-line.js"></script>
+	<script
+		src="src/codemirror-minified/addon/display/placeholder.js"></script>
+
+
+	<!-- Sweetalert2 -->
+	<script src="src/sweetalert2.all.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+	<script>var swal2 = swal; </script>
+	<!-- Can now call swal2 for sweetalert2, this statement must be before loading sweetalert.min.js -->
+
+	<!-- Sweetalert Modal -->
+	<script src="src/sweetalert.min.js" type="text/javascript"></script>
+
+        <script  src="src/LoquaciousModal.js" type="text/javascript"></script>
+        <script src="src/loquacious.js" type="text/javascript"></script> 
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+</footer>
+
 </html>
+ 

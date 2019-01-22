@@ -106,12 +106,8 @@ function sayit(currentString){
 };
 
 
-/**
- * This function loads Loquacious editor (with CodeMirror or text area option), assumes that there is only one active editor per window
- * @method loadLoquaciousEditor
- * @param {Number} id supports multiple editors
- * 
- */
+//load Loquacious editor (with CodeMirror or text area option)
+//assumes that there is only one active editor per window
 function loadLoquaciousEditor(id) {
 
 	createLoquaciousAriaRegion();  // support for accessibility in Loquacious
@@ -141,6 +137,7 @@ function loadLoquaciousEditor(id) {
 		// attach event handler  to handle keyup events in textarea if CodeMirror is not uploaded and 
 		// user has selected text-to-speech on Loquacious panel
 		if (!Loquacious.isEventListenerAttachedToTextarea && Loquacious.isMeSpeak) {
+			//console.log("add event handler to text area "+id);
 			addEventListenerToTextarea(id);
 			Loquacious.isEventListenerAttachedToTextarea = true;
 			preload();  // for meSpeak
@@ -182,11 +179,6 @@ function loadLoquaciousEditor(id) {
 
 }
 
-/**
- * This function replaces the text area in the page with CodeMirror and registers the keyHandled event
- * @method loadCodeMirrorEditor
- * @param {Number} id
- */
 function loadCodeMirrorEditor(id) {
 
 	CodeMirror.editor = CodeMirror.fromTextArea(document.getElementById(id), {
@@ -227,6 +219,7 @@ function loadCodeMirrorEditor(id) {
 	// used for key events that don't change the CodeMirror DOM
 	//The event "keyHandled" is registered using the "on" method of CodeMirror.
 	CodeMirror.editor.on("keyHandled", function(cm, name, event) {
+		//console.log("registered keyhandled event for editor");
 		doc = CodeMirror.editor.getDoc();
 
 		// get line number on which cursor is positioned
@@ -282,15 +275,13 @@ function loadCodeMirrorEditor(id) {
 			LoquaciousSpeak(data); // speak using meSpeak or screen reader, depending on user settings
 		}
 	});
-
+	//CodeMirror.editor.focus();
+	//CodeMirror.editor.setCursor({line: 1, ch: 0})
 } 
 
-/**
- *  This function checks if mespeakCookie is set in the accessibility panel and will read out data based on these
+/* This function checks if mespeakCookie is set in the accessibility panel and will read out data based on these
  * settings, if it is. Otherwise, it checks if the Loquacious editor option to enable meSpeak is on and it will speak out data
  * using meSpeak with default settings. Otherwise, the screen reader will get the data (sent to Loquacious aria region).
- * @method LoquaciousSpeak
- * @param {string} data to be spoken out
  */
 function LoquaciousSpeak(data) {
 	// if meSpeak is set, then meSpeak with speak the data
@@ -306,6 +297,8 @@ function LoquaciousSpeak(data) {
 	}
 	else if (Loquacious.isMeSpeak)	{
 		// CodeMirror used but is not accessible to screenreader, use meSpeak here
+		console.log("mespeak1234:"+data);
+
 		meSpeak.speak(punct(data));
 	} else {
 		// screen reader will read out the line in element "accessibleEditor" with an aria-live attribute
@@ -322,9 +315,9 @@ function LoquaciousSpeak(data) {
  * After the program is run, it reads out either the output if the program ran successfully or the errors.
  *
  * @method runitAndTest
- * @param {string} flag is used to indicate source of input program
  */             
 function runitAndTest(flag) { 
+	//console.log("inside runit() test");
 	preload();
 	meSpeak.stop();
 
@@ -333,6 +326,7 @@ function runitAndTest(flag) {
 		no=document.getElementById("editorNumber").value;
 	else 
 		no = "";
+	//var prog = document.getElementById("loquacious"+no).value; 
 
 	var prog;
 	// read the program from CodeMirror or the textarea
@@ -340,6 +334,8 @@ function runitAndTest(flag) {
 		prog = CodeMirror.editor.getDoc().getValue();
 	else
 		prog = document.getElementById("loquacious"+no).value; 
+
+	// console.log(prog);
 
 	var mypre = document.getElementById("output"); 
 	document.getElementById("output"+no).textContent = ""; // clear output
@@ -349,6 +345,8 @@ function runitAndTest(flag) {
 
 
 	if(prog==""){
+		//document.getElementById("output"+no).focus();
+
 		document.getElementById("output"+no).textContent = "Enter a program";
 		document.getElementById("status").textContent = "";
 
@@ -401,9 +399,10 @@ function runitAndTest(flag) {
 				meSpeak.speak("The program output is, "+spokenWord, {"speed":mespeakspeed, "variant": mespeakvariant}, function() {
 
 					if (flag == "book") {
-					    //	checkit_book(); // check user's solution in book
+						checkit_book(); // check user's solution in book
 					} else if (flag === "tutorial"){
-						// checkit(); // check the user's solution
+						// console.log("calling checkit()");
+						checkit(); // check the user's solution
 					}
 
 
@@ -412,10 +411,10 @@ function runitAndTest(flag) {
 			else {  
 
 				if (flag === "book") {
-					// checkit_book();  // check user's solution in book					
+					checkit_book();  // check user's solution in book					
 				}
 				else if (flag === "tutorial"){
-					// checkit(); // check the user's solution in tutorial		
+					checkit(); // check the user's solution in tutorial		
 					// read output with screenreader
 					var str = document.getElementById("output"+no).textContent;
 					var str1 = document.getElementById("status").textContent;
@@ -436,8 +435,10 @@ function runitAndTest(flag) {
 
 			// extract the number of the line that has error
 			var substr = str.match(/line \d+/); 
+			//console.log(substr);
 
 			var lineNum = substr[0].replace(/\D/g, '');      
+			//console.log("this line has error " +lineNum);
 			document.getElementById("output"+no).textContent = str;
 			document.getElementById("output"+no).textContent += "\n line "+lineNum+" has error ";
 
@@ -461,7 +462,7 @@ function runitAndTest(flag) {
 			setTimeout(  function() {screenreader(punct(str))} , 2000 );
 			
 			if (flag === "tutorial"){
-				// checkit(); // check the user's solution in tutorial		
+				checkit(); // check the user's solution in tutorial		
 				// read output with screenreader
 				var str = document.getElementById("output"+no).textContent;
 				var str1 = document.getElementById("status").textContent;
@@ -481,19 +482,23 @@ function runitAndTest(flag) {
  * @method speak
  */ 
 function speak() {
-	preload();
+    console.log("here12");
 
+	preload();
+    console.log("here123");
 	if (!Loquacious.isTextarea) {  // read in CodeMirror
 		if (!CodeMirror.editor.hasFocus())
 			CodeMirror.editor.focus();
 
 		var stopOverview = false; 
+	    console.log("here1234");
 
 		// stop meSpeak on a keydown event
 		CodeMirror.editor.on('keydown', stopHighLevelOverview);
 
 		function stopHighLevelOverview(editor, event) {       
 			var keyCode = event.which;
+			//console.log("stopped high level overview");
 			// stop if any key except Ctrl is pressed as Ctrl is used to stop screen reader announcements
 			if (keyCode != 17) 
 				stopOverview = true;
@@ -519,7 +524,8 @@ function speak() {
 				sequence = sequence.then(function() {
 
 					var data = CodeMirror.editor.getDoc().getLine(lineNumber);
-
+                    console.log(data);
+                    
 					if (stopOverview == false)
 						return sayItUsingPromise(data+'\n', lineNumber);
 					else 
@@ -540,12 +546,17 @@ function speak() {
 		var stopOverview = false;  
 
 		function stopHighLevelOverview(event) {
+
+			//var key = event.keyCode;
+
+			//console.log("stopped high level overview");
 			stopOverview = true;
 		}
 
 		var lineNum = 1;
 		var data = [];
 		if (stopOverview == false) {
+			//alert("in function overview loop");
 			// Internet Explorer
 			if (document.selection) {
 				txtArea.focus();
@@ -557,6 +568,7 @@ function speak() {
 			else if(txtArea.selectionStart || txtArea.selectionStart == '0')
 				cursorPos = txtArea.selectionStart;       	  
 
+			//alert("cursorPos = " +cursorPos);
 			data = txtArea.value.substring(cursorPos).split("\n");
 			var i = 0;
 
@@ -572,7 +584,14 @@ function speak() {
 
 				sequence = sequence.then(function() {
 					lineNumber++;
-	
+					// match "def", "for", "while", and "#"
+					// if ((arrayData.match(/^\s*def /) != null) || (arrayData.match(/^\s*for /) != null) || (arrayData.match(/^\s*while /) != null) || (arrayData.match(/^\s*#/) != null)) 
+					//     ;
+					// else {
+					//  arrayData = "";
+					// }
+
+					//console.log("arrayData" +arrayData);
 					if (stopOverview == false)
 						return sayItUsingPromiseInTextarea(arrayData, lineNumber);
 					else 
@@ -584,10 +603,6 @@ function speak() {
 	}
 }
 
-/**
- * This function is used to create an alert that prompts the user to clear the contents of the editor
- * @method resetEditor
- */
 function resetEditor(){
 
 	swal2({
@@ -641,6 +656,7 @@ function overview() {
 
 		function stopHighLevelOverview(editor, event) {       
 			var keyCode = event.which;
+			//console.log("stopped high level overview");
 			// stop if any key except Ctrl is pressed as Ctrl is used to stop screen reader announcements
 			if (keyCode != 17) 
 				stopOverview = true;
@@ -697,12 +713,16 @@ function overview() {
 
 		function stopHighLevelOverview(event) {
 
+			//var key = event.keyCode;
+
+			//console.log("stopped high level overview");
 			stopOverview = true;
 		}
 
 		var lineNum = 1;
 		var data = [];
 		if (stopOverview == false) {
+			//alert("in function overview loop");
 			// Internet Explorer
 			if (document.selection) {
 				txtArea.focus();
@@ -714,6 +734,7 @@ function overview() {
 			else if(txtArea.selectionStart || txtArea.selectionStart == '0')
 				cursorPos = txtArea.selectionStart;       	  
 
+			//alert("cursorPos = " +cursorPos);
 			data = txtArea.value.substring(cursorPos).split("\n");
 			var i = 0;
 			var sequence = Promise.resolve();
@@ -728,6 +749,8 @@ function overview() {
 					else {
 						arrayData = "";
 					}
+
+					//console.log("arrayData" +arrayData);
 					if (stopOverview == false)
 						return sayItUsingPromiseInTextarea(arrayData, lineNumber);
 					else 
@@ -747,8 +770,11 @@ function overview() {
  */ 
 function sayItUsingPromise(data, lineNumber) {
 	return new Promise(function(resolve, reject) {
+		//console.log( "in function sayItUsingPromise");
+		//var no = document.getElementById("editorNumber").value;
 		newData = punct(data); // convert punctuation to words
 
+		console.log("say it 1");
 		// setup meSpeak parameters
 		var mespeakcookie = getCookie("isMeSpeak");
 		if (mespeakcookie == "true") {
@@ -757,13 +783,19 @@ function sayItUsingPromise(data, lineNumber) {
 			mespeakspeed = mespeakspeed * 2;
 		}
 
+		console.log("say it 2");
+
 		CodeMirror.editor.setCursor({line: lineNumber, ch: 0}); // position cursor on the line to be read
+		console.log("say it 1");
 
 		// read out the line
 		meSpeak.stop();
 		meSpeak.speak(newData, {"speed":mespeakspeed, "variant": mespeakvariant}, function() {
+			//setCursorPosition(document.getElementById('loquacious'+no), lineNumber);
 			resolve();
 		});
+		console.log("say it 4");
+
 	});
 }
 
@@ -775,6 +807,7 @@ function sayItUsingPromise(data, lineNumber) {
  */ 
 function sayItUsingPromiseInTextarea(data, lineNumber) {
 	return new Promise(function(resolve, reject) {
+		//console.log( "in function sayItUsingPromise");
 		var no = document.getElementById("editorNumber").value;
 		newData = punct(data);
 		var mespeakcookie = getCookie("isMeSpeak");
@@ -809,10 +842,13 @@ function setCursorPosition(txtArea, lineNumber) {
 		j++;
 	}
 
+	//console.log("pos=" + pos);
+
 	// works on Safari, Firefox
 	if (txtArea.setSelectionRange) {
 		txtArea.focus();
 		txtArea.setSelectionRange(pos, pos);
+		//console.log('Updated cursor position to ' +pos);
 	} 
 	// for Internet Explorer
 	else if (ctrl.createTextRange) {
@@ -830,8 +866,8 @@ function setCursorPosition(txtArea, lineNumber) {
  * @method preload 
  */ 
 function preload(){
-	meSpeak.loadConfig('src/mespeak_config.json');
-	meSpeak.loadVoice('src/voices/en/en.json');
+	meSpeak.loadConfig('js/mespeak_config.json');
+	meSpeak.loadVoice('js/voices/en/en.json');
 }
 
 
@@ -841,6 +877,7 @@ function preload(){
  * @param {string} text the current output of the program
  */
 function outf(text) { 
+	//var no = document.getElementById("editorNumber").value;
 	var mypre = document.getElementById("output"); 
 	mypre.textContent += text; 
 } 
@@ -854,9 +891,12 @@ function handler_keyUp(e) {
 	meSpeak.stop();
 
 	var key = e.keyCode;
+	// console.log("key code" +key);
 
 	// if the up or down arrow key is pressed, speak line; 
 	if (key == 38 || key == 40) {                    
+		// var cursorPos = getCursorLineNumber();
+		// sayit("line "+cursorPos);
 		var linenum = getCursorLineNumber();
 		data = txtArea.value.split("\n");
 		meSpeak.stop();
@@ -883,6 +923,8 @@ function handler_keyUp(e) {
 
 	// for speaking out the program, press the s, SHIFT, and the CTRL keys at the same time
 	else if (e.ctrlKey && e.keyCode == 83 && e.shiftKey) {
+		// speak out the program
+		//sayit("");
 		speak();
 	}
 
@@ -908,6 +950,8 @@ function handler_keyUp(e) {
 		// speak out letter on left of cursor
 		mespeak.stop();
 		meSpeak.speak(text);
+
+		// sayit(text);
 	}
 
 	// to speak line, press the l, SHIFT, and the CTRL key at the same time
@@ -1017,14 +1061,9 @@ function builtinRead(x) {
 	return Sk.builtinFiles["files"][x];
 }
 
-
-/** 
- * This function speaks the editor contents using the built-in text-to-speech reader 
- * @method speakNow
- * @param {string} data to be read by screenreader
- */
 function speakNow(data) {
 	var mespeakcookie = getCookie("isMeSpeak");
+    console.log("In speaknow isMeSpeak is"+mespeakcookie);
 	if (mespeakcookie === "true") {
 		var mespeakvariant = getCookie("mespeak_variant");
 		var mespeakspeed = getCookie("mespeak_speed");
@@ -1032,18 +1071,17 @@ function speakNow(data) {
 		mespeak.stop();
 		meSpeak.speak(data, {"speed":mespeakspeed, "variant": mespeakvariant});
 	}
+	//else
+	// meSpeak.speak(data);
 }
 
 
-/**
- * This function creates an ARIA region in Loquacious.When a "keyHandled" event is triggered by pressing a key or "change" event is
- * triggered by changing the CodeMirror DOM, the relevant data is announced by the screenreader
- * using function screenreader(data). The relevant data is read from the editor
- * into the field named Loquacious.ariaRegion. This field has an aria attribute of polite
- * and it is set to offscreen so that that it is not visible on the page but changes in 
- * this field are announced by the screenreader.
- * @method createLoquaciousAriaRegion
-*/
+//When a "keyHandled" event is triggered by pressing a key or "change" event is
+//triggered by changing the CodeMirror DOM, the relevant data is announced by the screenreader
+//using function screenreader(data). The relevant data is read from the editor
+//into the field named Loquacious.ariaRegion. This field has an aria attribute of polite
+//and it is set to offscreen so that that it is not visible on the page but changes in 
+//this field are announced by the screenreader.
 function createLoquaciousAriaRegion() {
 	var myDiv = document.getElementById('body');
 	var newDiv = document.createElement('div')
@@ -1057,20 +1095,16 @@ function createLoquaciousAriaRegion() {
 	Loquacious.ariaRegion.setAttribute('id', 'LoquaciousAriaRegion');
 	Loquacious.ariaRegion.setAttribute('aria-hidden', 'false');
 	Loquacious.ariaRegion.setAttribute('aria-live', 'assertive');  // Opera and Safari
+	//Loquacious.ariaRegion.setAttribute('style', 'display:block; height:1px; width:1px; left=-1000px; overflow:hidden; position:fixed');
 	Loquacious.ariaRegion.setAttribute('class', 'visually-hidden');
 	Loquacious.ariaRegion.setAttribute('aria-relevant', 'text');
 }
 
-/**
- * This function is used to pass editor contents to the screenreader.
- * Puts the data to be spoken by screenreader in a region (Loquacious.ariaRegion) with an attribute of aria-live.By default, 
- * screen readers only read out data that has changed. So the previous data is recorded in the static variable previousData 
- * and compared with the new data. If there is no change, a new hidden textarea is created with an attribute of aria-live and 
- * the data to be spoken is put in this new textarea for the screenreader.
- * @method screenreader
- * @param {string} data to read out
- * @returns
- */
+//Puts the data to be spoken by screenreader in a region (Loquacious.ariaRegion) with an attribute of aria-live.
+//By default, screen readers only read out data that has changed. So the previous data
+//is recorded in the static variable previousData and compared with the new data. If there is no change, a new hidden
+//textarea is created with an attribute of aria-live and the data to be spoken is put in this new textarea for the 
+//screenreader.
 function screenreader(data) {
 	if (typeof screenreader.previousData == 'undefined')
 		screenreader.previousData = "";
@@ -1087,6 +1121,7 @@ function screenreader(data) {
 		Loquacious.ariaRegion.setAttribute('id', 'LoquaciousAriaRegion');
 		Loquacious.ariaRegion.setAttribute('aria-hidden', 'false');
 		Loquacious.ariaRegion.setAttribute('aria-live', 'assertive'); 
+		//Loquacious.ariaRegion.setAttribute('style', 'display:block; height:1px; width:1px; left=-1000px; overflow:hidden; position:fixed');
 		Loquacious.ariaRegion.setAttribute('class', 'visually-hidden');
 
 		Loquacious.ariaRegion.setAttribute('aria-relevant', 'additions text');
@@ -1099,14 +1134,7 @@ function screenreader(data) {
 }
 
 
-/**
- * Call this function for any specific browser to attach aria-labels to all buttons given their ids
- * @param {string} id of Run button
- * @param {string} id of Reset button
- * @param {string} id of Speak button
- * @param {string} id of Overview button
- * @param {string} id of Settings button
- */
+//call this function for any specific browser to attach aria-labels to all buttons given their ids
 function addAriaLabelsToLoquaciousButtons(run, reset, speak, overview, settings) {
 	document.getElementById(run).setAttribute("aria-label", "Test and save the program");
 	document.getElementById(reset).setAttribute("aria-label", "Clear the program in the editor");
@@ -1115,11 +1143,7 @@ function addAriaLabelsToLoquaciousButtons(run, reset, speak, overview, settings)
 	document.getElementById(settings).setAttribute("aria-label", "Modify accessibility settings");
 }
 
-/** 
- * This function describes the keys available in editor
- * @method loquaciousHelp
- * @returns
- */
+// Describe the keys available in editor
 function loquaciousHelp() {
     preload();
 
